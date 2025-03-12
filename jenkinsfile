@@ -24,10 +24,8 @@ pipeline {
         stage('Terraform Init') {
                     steps {
                        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'terraform_keys']]){
-                           # dir('infra') {
                             sh 'echo "=================Terraform Init=================="'
                             sh 'terraform init'
-                        #}
                     }
                 }
         }
@@ -37,10 +35,9 @@ pipeline {
                 script {
                     if (params.PLAN_TERRAFORM) {
                        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'terraform_keys']]){
-                            dir('infra') {
                                 sh 'echo "=================Terraform Plan=================="'
                                 sh 'terraform plan'
-                            }
+                            
                         }
                     }
                 }
@@ -52,10 +49,8 @@ pipeline {
                 script {
                     if (params.APPLY_TERRAFORM) {
                        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'terraform_keys']]){
-                            dir('infra') {
                                 sh 'echo "=================Terraform Apply=================="'
                                 sh 'terraform apply -auto-approve'
-                            }
                         }
                     }
                 }
